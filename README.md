@@ -22,13 +22,15 @@ To do so simply call the `init_db` method with a SQLAlchemy database URL.  If yo
 
 Example:
 
-            import mailapi
+```python
+import mailapi
 
-            mailapi.domain.get_all_domains() # throws a RuntimeError
+mailapi.domain.get_all_domains() # throws a RuntimeError
 
-            mailapi.init_db('mysql://scott:tiger@192.168.0.1:3306/vmail') # Initialize the db connection
+mailapi.init_db('mysql://scott:tiger@192.168.0.1:3306/vmail') # Initialize the db connection
 
-            mailapi.domain.get_all_domains() # works!
+mailapi.domain.get_all_domains() # works!
+```
 
 # Need Help?
 
