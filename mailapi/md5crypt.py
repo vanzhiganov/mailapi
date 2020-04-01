@@ -64,7 +64,6 @@ def unix_md5_crypt(pw, salt, magic=None):
     # Take care of the magic string if present
     if salt[:len(magic)] == magic:
         salt = salt[len(magic):]
-        
 
     # salt can have up to 8 characters:
     import string
