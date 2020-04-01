@@ -10,7 +10,7 @@ A programmer friendly interface for iRedAdmin (OSE version)
 
 # Getting Started
 
-1. `$ virtualenv -p $(which python2.7) venv`
+1. `$ virtualenv -p $(which python3) venv`
 2. `$ source venv/bin/activate`
 3. `(venv)$ python setup.py develop`
 
@@ -27,9 +27,10 @@ import mailapi
 
 mailapi.domain.get_all_domains() # throws a RuntimeError
 
-mailapi.init_db('mysql://scott:tiger@192.168.0.1:3306/vmail') # Initialize the db connection
+mailapi.init_db('mysql+pymysql://scott:tiger@192.168.0.1:3306/vmail') # Initialize the db connection
 
-mailapi.domain.get_all_domains() # works!
+for i in mailapi.domain.get_all_domains():
+  print(i.domain)
 ```
 
 # Need Help?
@@ -40,7 +41,7 @@ I suggest you look at the test cases in ./tests as they illustrate how this pack
 
 Easy...
 
-`(venv)$ TEST_DB_CONN_STR='mysql://scott:tiger@192.168.0.1:3306/vmail' python setup.py test`
+`(venv)$ TEST_DB_CONN_STR='mysql+pymysql://scott:tiger@192.168.0.1:3306/vmail' python setup.py test`
 
 # I Need Feature x, y, z
 
