@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy.orm.exc import NoResultFound
 from .models import Domain, Mailbox, Alias
 from .db import get_db_session
@@ -26,7 +27,7 @@ def create_domain(domain_name, description=''):
         raise DomainExists(domain_name)
 
     db_session = get_db_session()
-    d = Domain(domain=domain_name, description=description)
+    d = Domain(domain=domain_name, description=description, created=datetime.now())
     db_session.add(d)
     db_session.flush()
     return d

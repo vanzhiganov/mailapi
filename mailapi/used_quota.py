@@ -1,17 +1,9 @@
-from datetime import datetime
-
-from sqlalchemy import create_engine, Column, Integer, ForeignKey, Numeric, DateTime, func
-from sqlalchemy.orm.exc import NoResultFound
-
+from sqlalchemy import func
 from .domain import domain_exists
-from .password import generate_md5_password
-from .maildir import generate_maildir_path
-from .models import Mailbox, UsedQuota
-from .helpers import parse_email_domain
-from .alias import add_alias, delete_aliases, delete_alias
+from .models import UsedQuota
 from .mailbox import mailbox_exists
 from .db import get_db_session
-from .exc import NoSuchDomain, MailboxExists, NoSuchMailbox
+from .exc import NoSuchDomain, NoSuchMailbox
 
 
 def get_domain_sum_used_quota(domain: str):
@@ -45,29 +37,12 @@ def get_mailbox_used_quota(email_address: str):
 
 
 def delete_used_quota_mailbox(email_address):
-    """ Deletes the mailbox from the database by the given email address.
-
-    :param email_address: String
-    :return: True if success else False
-    """
-
     if not mailbox_exists(email_address):
         raise NoSuchMailbox(email_address)
-
-    num_deleted = get_db_session().query(UsedQuota).filter_by(username=email_address).delete()
-
-    return num_deleted == 1
+    return get_db_session().query(UsedQuota).filter_by(username=email_address).delete() == 1
 
 
 def reset_mailbox_used_quota(email_address):
-    """ Sets the password for the given email address to the given password
-
-    :param email_address: Email address
-    :param plain_password: The new desired password in plain text form
-    :return: True if success
-    :raises NoSuchMailbox: If the given email address does not exist
-    """
-
     if not mailbox_exists(email_address):
         raise NoSuchMailbox(email_address)
 

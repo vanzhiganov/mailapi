@@ -21,6 +21,10 @@ class Domain(Base):
     __tablename__ = 'domain'
 
 
+class AliasDomain(Base):
+    __tablename__ = 'alias_domain'
+
+
 class Alias(Base):
     __tablename__ = 'alias'
 
