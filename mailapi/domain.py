@@ -29,6 +29,7 @@ def create_domain(domain_name, description=''):
     db_session = get_db_session()
     d = Domain(domain=domain_name, description=description, created=datetime.now())
     db_session.add(d)
+    db_session.commit()
     db_session.flush()
     return d
 
@@ -41,8 +42,7 @@ def get_domain(domain_name: str):
     """
 
     try:
-        domain = get_db_session().query(Domain).\
-            filter_by(domain=domain_name).one()
+        domain = get_db_session().query(Domain).filter_by(domain=domain_name).one()
         return domain
     except NoResultFound:
         return None
@@ -66,9 +66,7 @@ def get_all_domains():
 
     :return: List of domains
     """
-
-    domains = get_db_session().query(Domain).all()
-    return domains
+    return get_db_session().query(Domain).all()
 
 
 def delete_domain(domain_name):
@@ -87,8 +85,8 @@ def delete_domain(domain_name):
     delete_mailboxes(domain_name)
 
     db_session = get_db_session()
-    num_deleted = db_session.query(Domain).\
-        filter_by(domain=domain_name).delete()
+    num_deleted = db_session.query(Domain).filter_by(domain=domain_name).delete()
+    db_session.commit()
     db_session.flush()
 
     return num_deleted == 1
@@ -105,8 +103,7 @@ def delete_aliases(domain_name):
     if not domain_exists(domain_name):
         raise NoSuchDomain(domain_name)
 
-    num_deleted = get_db_session().query(Alias).\
-        filter_by(domain=domain_name).delete()
+    num_deleted = get_db_session().query(Alias).filter_by(domain=domain_name).delete()
 
     return num_deleted >= 1
 
@@ -122,8 +119,7 @@ def delete_mailboxes(domain_name):
     if not domain_exists(domain_name):
         raise NoSuchDomain(domain_name)
 
-    num_deleted = get_db_session().query(Mailbox).\
-        filter_by(domain=domain_name).delete()
+    num_deleted = get_db_session().query(Mailbox).filter_by(domain=domain_name).delete()
 
     return num_deleted >= 1
 

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm.exc import NoResultFound
 
-from .domain import domain_exists
+from .domain import domain_exists, get_domain
 from .password import generate_md5_password, generate_sha512_password
 from .maildir import generate_maildir_path
 from .models import Mailbox
@@ -65,6 +65,13 @@ def create_mailbox(email_address,
 
     db_session = get_db_session()
     db_session.add(mailbox)
+
+    # update domain mailbox counter
+    ddd = get_domain(domain_part)
+    ddd.mailboxes = ddd.mailboxes = 1
+    ddd.modified = datetime.now()
+
+    db_session.commit()
     db_session.flush()
 
     return mailbox
