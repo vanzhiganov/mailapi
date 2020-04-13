@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm.exc import NoResultFound
 
 from .domain import domain_exists
-from .password import generate_md5_password
+from .password import generate_md5_password, generate_sha512_password
 from .maildir import generate_maildir_path
 from .models import Mailbox
 from .helpers import parse_email_domain
@@ -45,7 +45,7 @@ def create_mailbox(email_address,
 
     mailbox = Mailbox()
     mailbox.username = email_address
-    mailbox.password = generate_md5_password(plain_password)
+    mailbox.password = generate_sha512_password(plain_password)
     mailbox.language = language
     mailbox.storagebasedirectory = storage_base_dir
     mailbox.storagenode = storage_node
